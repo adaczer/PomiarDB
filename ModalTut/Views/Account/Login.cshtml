@@ -1,0 +1,160 @@
+﻿@model ModalTut.ViewModel.Login2ViewModels
+
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zaloguj się do serwisu !</title>
+    <link rel="shortcut icon" type="image/x-icon" href="~/Prototype/favicon.ico" />
+    @Styles.Render("~/Content/css")
+</head>
+<body>
+    @*@ViewBag.Info
+        <br />
+        @ViewData["ReturnUrl"]*@
+    <div class="container" id="container">
+        <div class="form-container sign-up-container">
+
+            <!-- Login Form -->
+
+            @using (@Html.BeginForm("Register", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, htmlAttributes: new { @class = "main-form needs-validation", @id = "contact-form", @role = "form", novalidate = "true" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div id="loginerror">
+                    @Html.ValidationMessage("loginerror", "", new { @style = "color: red; font-weight:bold" })
+                </div>
+
+                <h3 class="mt-4">Utwórz konto</h3>
+                <div class="form-group mb-2">
+                    <label>
+                        @Html.TextBoxFor(m => m.Email, htmlAttributes: new { @class = "my_form-control", @id = "form_email", required = "required" })
+                        <small class="my_place">Email</small>
+                        @*<small class="invalid-feedback">To pole jest wymagane.</small>*@
+
+                    </label>
+                </div>
+                <div style="color:red" class="mx-1">
+                    @Html.ValidationMessageFor(m => m.Email)
+                </div>
+                <div class="form-group mb-2">
+                    <label>
+                        @Html.TextBoxFor(m => m.Password, htmlAttributes: new { @class = "my_form-control", @id = "form_password", type = "password", required = "required" })
+                        <small class="my_place">Hasło</small>
+                    </label>
+                </div>
+                <div style="color:red" class="mx-1">
+                    @Html.ValidationMessageFor(m => m.Password)
+                </div>
+
+                <div class="form-group mb-2">
+                    <label>
+                        @Html.TextBoxFor(m => m.ConfirmPassword, htmlAttributes: new { @class = "my_form-control", @id = "form_password", required = "required", type = "password" })
+                        <small class="my_place">Powtórz hasło</small>
+                    </label>
+                </div>
+
+                <div style="color:red" class="mx-1">
+                    @Html.ValidationMessageFor(m => m.ConfirmPassword)
+                </div>
+
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary mt-2 mx-auto">UTWÓRZ KONTO</button>
+                </div>
+            }
+            <!--/Login Form -->
+        </div>
+
+        <div class="form-container sign-in-container">
+            <!-- Create Account Form -->
+            @using (@Html.BeginForm("Login", "Account", FormMethod.Post, htmlAttributes: new { @class = "main-form needs-validation", @id = "contact-form", @role = "form", novalidate = "true" }))
+            {
+                @Html.AntiForgeryToken()
+                <div id="login-error">
+                    @Html.ValidationMessage("loginerror", "", new { @style = "color: red; font-weight:bold" })
+                </div>
+                <h3 class="mt-4">Zaloguj się</h3>
+                <div class="form-group mb-2">
+                    <label>
+                        @Html.TextBoxFor(m => m.Email, htmlAttributes: new { @class = "my_form-control", @id = "form_email", required = "required" })
+                        <small class="my_place">Email</small>
+                    </label>
+                </div>
+
+                <div style="color:red" class="mb-2">
+                    @Html.ValidationMessageFor(m => m.Email)
+                </div>
+
+                <div class="form-group mb-2">
+                    <label>
+                        @Html.TextBoxFor(m => m.Password, htmlAttributes: new { @class = "my_form-control", @id = "form_email", required = "required", type = "password" })
+                        <small class="my_place">Hasło</small>
+                    </label>
+                </div>
+
+                <div style="color:red" class="mb-2">
+                    @Html.ValidationMessageFor(m => m.Password)
+                </div>
+
+                @Html.HiddenFor(m => m.Password)
+
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary mt-2 mx-auto">ZALOGUJ SIĘ</button>
+                </div>
+
+                <div class="form-group mt-2 text-center">
+                    <span class="forgot">Zapomnaiłeś hasła ?</span>
+                </div>
+            }
+            <!--/Create Account Form -->
+        </div>
+
+
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1>Witaj!</h1>
+                    <p>Jeżeli masz już konto w serwisie, zaloguj się.</p>
+                    <button class="ghost" id="signIn">ZALOGUJ SIĘ</button>
+
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1>PomiarDB</h1>
+                    <p>
+                        Zaloguj się i korzystaj w pełni z serwisu.<br>
+                        Jeżeli nie masz jeszcze konta, utwórz je.
+                    </p>
+                    <button class="ghost" id="signUp">ZAŁÓŻ KONTO</button>
+                    <button onclick="location.href='@Url.Action("Index", "Home")'" class="ghost mt-4" id="gosc">WEJDŹ JAKO GOŚĆ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*<script src="~/Scripts/jquery-3.5.1.min.js"></script>*@
+
+    @Scripts.Render("~/bundles/js")
+
+    <script src="~/Scripts/popper.min.js"></script>
+
+
+
+    <script type="text/javascript">
+        const signUpButton = document.getElementById('signUp');
+        const signInButton = document.getElementById('signIn');
+        const container = document.getElementById('container');
+
+        signUpButton.addEventListener('click', () => {
+            container.classList.add("right-panel-active");
+        });
+
+        signInButton.addEventListener('click', () => {
+            container.classList.remove("right-panel-active");
+        });
+
+    </script>
+</body>
+</html>

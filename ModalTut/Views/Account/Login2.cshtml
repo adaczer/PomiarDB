@@ -1,0 +1,76 @@
+﻿@model ModalTut.ViewModel.Login2ViewModels
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+</head>
+<body>
+    @ViewBag.Info
+    <br />
+    @ViewData["ReturnUrl"]
+    <div>
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <div id="login-error">
+                @Html.ValidationMessage("loginerror", "")
+            </div>
+            <table id="login-table" style="margin-left:auto; margin-right:auto">
+                <tr>
+                    <td>
+                        @Html.LabelFor(m => m.Email)
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.Email)
+                        <div class="login-validation-message">
+                            @Html.ValidationMessageFor(o => o.Email)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(o => o.Password)
+                    </td>
+                    <td>
+                        @Html.PasswordFor(o => o.Password)
+                        <div class="login-validation-message">
+                            @Html.ValidationMessageFor(o => o.Password)
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <div class="checkbox">
+                            @Html.LabelFor(m => m.RememberMe)
+                            @Html.CheckBoxFor(m => m.RememberMe)
+
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <input type="submit" value="Zaloguj" style="height: 40px;" />
+                    </td>
+                </tr>
+
+
+
+            </table>
+
+
+        }
+    </div>
+
+    <script src="~/Scripts/jquery-3.5.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>

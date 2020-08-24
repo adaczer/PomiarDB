@@ -1,0 +1,12 @@
+﻿body {
+}
+
+
+#dtBasicExample tbody td {
+    vertical-align: middle;
+}
+
+.field-validation-error
+{
+    color: red !important;
+}

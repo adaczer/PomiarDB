@@ -1,0 +1,164 @@
+﻿@using ModalTut.Models
+@model ModalTut.ViewModel.PomiarItems2ViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>Wprowadzanie danych pomiarowych</title>
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+        <!-- Google Fonts Roboto -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+        <link rel="stylesheet" href="~/Content/style.css">
+        <link href="~/Content/bootstrap.css" rel="stylesheet" />
+
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+        <link href="~/Content/addons/datatables.min.css" rel="stylesheet">
+    </head>
+    <body>
+        <center><button class="mt-5" data-toggle="modal" data-target="#myModal3"></button></center>
+
+        <div class="modal" id="myModal3">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="modal-title">Edycja danych:</div>
+                        <a class="close" href="@Url.Action("Details", "Pomiar", new { id = Model.Pomiar.PomiarId })">&times;</a>
+                    </div>
+
+                    <div class="modal-body">
+
+
+                        @using (Html.BeginForm("EditItem2", "Pomiar", FormMethod.Post))
+                        {
+                            <div class="row">
+                                <div class="col-12">
+                                    @Html.HiddenFor(m => m.Items.PomiarId)
+                                    @Html.HiddenFor(m => m.Items.ItemsId)
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(m => m.Items.Uwagi, htmlAttributes: new { @class = "form-control", @placeholder = "Pomieszczenie (np. pokój, kuchnia itd" })
+                                        @Html.ValidationMessageFor(m => m.Items.Uwagi)
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.DropDownListFor(m => m.Items.RodzajDrzwi, new List<SelectListItem>{
+                                       new SelectListItem {Text = "Drzwi wewnętrzne", Value = "Drzwi wewnętrzne" },
+                                       new SelectListItem{Text = "Drzwi przesuwne", Value = "Drzwi przesuwne"},
+                                       new SelectListItem{Text = "Drzwi nietypowe", Value = "Drzwi nietypowe"} },
+                                       "-- Wybierz rodzaj drzwi --", htmlAttributes: new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.Items.RodzajDrzwi, "", htmlAttributes: new { @class = "field-validation-error" })
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.DropDownListFor(m => m.Items.SzerDrzwi, new List<SelectListItem>{
+                                  new SelectListItem {Text = "60 cm", Value = "60 cm" },
+                                  new SelectListItem{Text = "70 cm", Value = "70 cm"},
+                                  new SelectListItem{Text = "80 cm", Value = "80 cm"},
+                                  new SelectListItem{Text = "90 cm", Value = "90 cm"},
+                                  new SelectListItem{Text = "100 cm", Value = "100 cm"},
+                                  new SelectListItem{Text = "Inne", Value = "Inne"} },
+                                  "-- Wybierz szerokość drzwi --", htmlAttributes: new { @class = "form-control" })
+                                        @*@Html.DropDownListFor(m => m.Items.SzerDrzwi, EnumHelper.GetSelectList(typeof(Szerokosc)), "-- Wybierz szerokość drzwi --", htmlAttributes: new { @class = "form-control" })*@
+                                        @Html.ValidationMessageFor(m => m.Items.SzerDrzwi)
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.DropDownListFor(m => m.Items.KierDrzwi, EnumHelper.GetSelectList(typeof(Kierunek)), "-- Wybierz kierunek drzwi --", htmlAttributes: new { @class = "form-control", @placeholder = "Kierunek" })
+                                        @Html.ValidationMessageFor(m => m.Items.KierDrzwi)
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.DropDownListFor(m => m.Items.OscWym, new List<SelectListItem>{
+                                         new SelectListItem {Text = "75-95", Value = "75-95" },
+                                         new SelectListItem{Text = "100-120", Value = "100-120"},
+                                         new SelectListItem{Text = "120-140", Value = "120-140"},
+                                         new SelectListItem{Text = "140-160", Value = "140-160"},
+                                         new SelectListItem{Text = "160-180", Value = "160-180"},
+                                         new SelectListItem{Text = "180-200", Value = "180-200"},
+                                         new SelectListItem{Text = "200-220", Value = "200-220"},
+                                         new SelectListItem{Text = "220-240", Value = "220-240"},
+                                         new SelectListItem{Text = "240-260", Value = "240-260"},
+                                         new SelectListItem{Text = "260-280", Value = "260-280"},
+                                         new SelectListItem{Text = "280-300", Value = "280-300"} },
+                                         "-- Wybierz szerokość ościeżnicy --", htmlAttributes: new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.Items.OscWym)
+                                    </div>
+
+                                    <div class="form-group  form-control" style="height: 53px;">
+                                        <div class="form-check">
+                                            <div class="row d-flex justify-content-between">
+
+                                                <label class="form-check-label mt-2 col-md-9 " for="checkbox2">
+                                                    Opaska poszerzająca ?
+                                                </label>
+                                                @Html.CheckBoxFor(m => m.Items.IsOpaska, htmlAttributes: new { @class = "form-control col-md-2 defaultCheckbox ", @id = "checkbox2", @name = "checkbox2" })
+                                            </div>
+                                        </div>
+                                        @Html.ValidationMessageFor(m => m.Items.IsOpaska)
+                                    </div>
+
+
+
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(m => m.Items.Ilosc, htmlAttributes: new { @class = "form-control", @placeholder = "Ilość" })
+                                        @Html.ValidationMessageFor(m => m.Items.Ilosc)
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="modal-footer">
+
+                                <a href="@Url.Action("Details", "Pomiar", new { id = Model.Pomiar.PomiarId })" class="btn btn-light">Anuluj</a>
+
+                                <button type="submit" class="btn btn-success">ZAPISZ</button>
+                            </div>
+                        }
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <style>
+            .field-validation-error {
+                color: red !important;
+            }
+        </style>
+        <script src="~/Scripts/jquery-3.5.1.js"></script>
+        @*<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>*@
+
+        <script src="~/Scripts/jquery.validate.js"></script>
+        <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+        <script src="~/Scripts/popper.min.js"></script>
+        <script src="~/Scripts/bootstrap.js"></script>
+        @*<script type="text/javascript" src="~/Scripts/addons/datatables.min.js"></script>*@
+        <script type="text/javascript">
+        </script>
+
+
+        <script type="text/javascript">
+    function openPopup() {
+        $("#myModal3").modal('show');
+    }
+
+    @if (true)
+    {
+
+        @:openPopup();
+    }
+        </script>
+
+
+    </body>
+</html>
+
+
